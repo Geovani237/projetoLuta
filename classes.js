@@ -73,18 +73,24 @@ class Stage {
 
     start() {
         this.update();
-        //TODO: Evento de botão de atacar.
 
+        // botão de atacar 
         this.fighter1El.querySelector('.attackButton').addEventListener('click', () => this.doAttack(this.fighter1, this.fighter2));
         this.fighter2El.querySelector('.attackButton').addEventListener('click', () => this.doAttack(this.fighter2, this.fighter1));
 
     }
 
-    update() {
+    update() { // atualizar a tela com as informçôes dos dois lutadores 
         // fighter 1
-        this.fighter1El.querySelector('.name').innerHTML = `${this.fighter1.name} - ${this.fighter1.life.toFixed(1)} HP`; // colocando na tela o nome do personagem e sua vida
+        // colocando na tela o nome do personagem e sua vida
+        this.fighter1El.querySelector('.name').innerHTML = `${this.fighter1.name} - ${this.fighter1.life.toFixed(1)} HP`; 
+        
+        // calcular a porcetangem
         let f1Pct = (this.fighter1.life / this.fighter1.maxLife) * 100;
+
+        //preencher a barrinha vermelha com a porcentagem 
         this.fighter1El.querySelector('.bar').style.width = `${f1Pct}%`
+         
 
         // fighter 2
         this.fighter2El.querySelector('.name').innerHTML = `${this.fighter2.name} - ${this.fighter2.life.toFixed(1)} HP`;
@@ -93,13 +99,17 @@ class Stage {
 
     }
 
+    //função de atacar 
     doAttack(attacking, attacked) {
         //console.log(`${attacking.name} está atacando ${attacked.name}`);
+
+        //verificação se quem está atacando está vivo ou morto 
         if(attacking.life <= 0 || attacked.life <= 0) {
             this.log.addMessage(`Atacando cachorro morto.`);
             return;
         }
 
+        //fator de ataque e fator de defesa
         let attackFactor = (Math.random() * 2).toFixed(2);
         let defenseFactor = (Math.random() * 2).toFixed(2);
 
@@ -113,26 +123,30 @@ class Stage {
         } else {
             this.log.addMessage(`${attacked.name} conseguiu defender...`);
         }
-
-        this.update()
+        // atualizar quando ocorre um ataque 
+        this.update() 
     }
   }
 
 class Log {
     list = [];
-
+    // receber o elemento de listage
     constructor(listEl) {
         this.listEl = listEl;
     }
+    //recebe a msg, adiciona a msg no array
     addMessage(msg) {
         this.list.push(msg);
+        //rederizar
         this.render();
     }
-
+    //transformar a lista no visual
     render() {
+        //limpa a lista
         this.listEl.innerHTML = '';
-
+        //percorre a lista 
         for(let i in this.list) {
+            //preenche a lista
             this.listEl.innerHTML += `<li>${this.list[i]}</li>`
         }
     }
